@@ -15,77 +15,77 @@ import {
 export const Signup = () => {
   return (
     <section
-         className="relative min-h-screen bg-cover bg-center px-6 py-12"
+         className="relative min-h-screen bg-cover bg-center px-4 py-8 sm:px-6 sm:py-12"
          style={{ backgroundImage: `url(${Img})` }}
        >
-         <div className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+         <div className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-6xl items-center gap-4 sm:gap-10 md:grid-cols-[1.1fr_0.9fr]">
            <div className="max-w-xl text-white drop-shadow-lg">
-             <p className="mb-4 text-sm uppercase tracking-[0.35em] text-white/80">
+             <p className="mb-2 sm:mb-4 text-xs sm:text-sm uppercase tracking-[0.35em] text-white/80">
                Therapy Internship
              </p>
-             <h1 className="text-5xl font-semibold leading-tight md:text-7xl">
+             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold leading-tight">
                Log in or create an account
              </h1>
-             <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/85 md:text-xl">
+             <p className="mt-3 sm:mt-6 max-w-lg text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-white/85">
                Join the platform to access guided support, track your progress, and
                stay connected with your therapy journey.
              </p>
            </div>
    
-           <div className="ml-auto w-full max-w-xl rounded-[2rem] bg-white/85 p-6 shadow-2xl backdrop-blur-md md:p-8">
+           <div className="w-full max-w-xl rounded-2xl sm:rounded-[2rem] bg-white/85 p-4 sm:p-6 md:p-8 shadow-2xl backdrop-blur-md md:ml-auto">
              <form className="space-y-6">
                <FieldGroup>
                  <FieldSet>
-                   <FieldLegend>Create account</FieldLegend>
-                   <FieldDescription>
+                   <FieldLegend className="text-lg sm:text-xl">Create account</FieldLegend>
+                   <FieldDescription className="text-xs sm:text-sm">
                      Fill in your details to get started.
                    </FieldDescription>
    
                    <FieldGroup>
                      <Field>
-                       <FieldLabel htmlFor="full-name">Full name</FieldLabel>
+                       <FieldLabel htmlFor="full-name" className="text-xs sm:text-sm">Full name</FieldLabel>
                        <input
                          id="full-name"
                          name="fullName"
                          type="text"
                          placeholder="Evil Rabbit"
-                         className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none transition focus:border-green-600"
+                         className="h-9 sm:h-11 w-full rounded-lg sm:rounded-xl border border-black/10 bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none transition focus:border-green-600"
                          required
                        />
                      </Field>
    
                      <Field>
-                       <FieldLabel htmlFor="email">Email address</FieldLabel>
+                       <FieldLabel htmlFor="email" className="text-xs sm:text-sm">Email address</FieldLabel>
                        <input
                          id="email"
                          name="email"
                          type="email"
                          placeholder="name@example.com"
-                         className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none transition focus:border-green-600"
+                         className="h-9 sm:h-11 w-full rounded-lg sm:rounded-xl border border-black/10 bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none transition focus:border-green-600"
                          required
                        />
                      </Field>
    
-                     <div className="grid gap-4 md:grid-cols-2">
+                     <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
                        <Field>
-                         <FieldLabel htmlFor="password">Password</FieldLabel>
+                         <FieldLabel htmlFor="password" className="text-xs sm:text-sm">Password</FieldLabel>
                          <input
                            id="password"
                            name="password"
                            type="password"
                            placeholder="••••••••"
-                           className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none transition focus:border-green-600"
+                           className="h-9 sm:h-11 w-full rounded-lg sm:rounded-xl border border-black/10 bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none transition focus:border-green-600"
                            required
                          />
                        </Field>
    
                        <Field>
-                         <FieldLabel htmlFor="role">Role</FieldLabel>
+                         <FieldLabel htmlFor="role" className="text-xs sm:text-sm">Role</FieldLabel>
                          <select
                            id="role"
                            name="role"
                            defaultValue=""
-                           className="h-11 w-full rounded-xl border border-black/10 bg-white px-4 text-sm outline-none transition focus:border-green-600"
+                           className="h-9 sm:h-11 w-full rounded-lg sm:rounded-xl border border-black/10 bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none transition focus:border-green-600"
                            required
                          >
                            <option value="" disabled>
@@ -118,11 +118,11 @@ export const Signup = () => {
    
                  <FieldSeparator />
    
-                 <Field orientation="horizontal" className="justify-between gap-3">
-                   <Button type="submit" className="min-w-32">
+                 <Field orientation="vertical" className="gap-2 sm:gap-3">
+                   <Button type="submit" className="w-full sm:w-auto">
                      Create Account
                    </Button>
-                   <Button variant="outline" type="button" className="min-w-32">
+                   <Button variant="outline" type="button" className="w-full sm:w-auto">
                      Cancel
                    </Button>
                  </Field>

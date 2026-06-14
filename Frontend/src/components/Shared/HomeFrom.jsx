@@ -18,15 +18,15 @@ export const Homepage = () => {
 
 >
 
-  <div className="absolute left-20 top-[35%] max-w-xl">
+  <div className="absolute top-10 left-4 sm:top-[35%] sm:left-20 max-w-xs sm:max-w-xl">
 
-    <h1 className="text-7xl font-serif text-green-900">
+    <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif text-green-900">
 
       Therapy for Mind & Soul
 
     </h1>
 
-    <p className="mt-6 text-xl text-green-800 leading-relaxed">
+    <p className="mt-3 sm:mt-6 text-sm sm:text-lg md:text-xl text-green-800 leading-relaxed">
 
       Meditation and mindfulness for a healthier,
 
@@ -36,13 +36,15 @@ export const Homepage = () => {
 
   </div >
   
-  <Button className="absolute top-[50%] left-[70%]  " variant="">
-    <Link to="/register">Get Started</Link>
-  </Button>
+  <div className="absolute bottom-6 right-4 left-4 flex flex-col gap-3 sm:flex-row sm:bottom-auto sm:top-[50%] sm:left-[70%] sm:-translate-x-1/2">
+    <Button className="w-full sm:w-auto" variant="">
+      <Link to="/register">Get Started</Link>
+    </Button>
 
-   <Button className="absolute top-[50%] left-[70%] -translate-x-30 " variant="outline">
-    <Link to="/login">Login</Link>
-  </Button>
+    <Button className="w-full sm:w-auto" variant="outline">
+      <Link to="/login">Login</Link>
+    </Button>
+  </div>
 
 
 </section>
