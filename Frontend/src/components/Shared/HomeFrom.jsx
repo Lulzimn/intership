@@ -34,10 +34,16 @@ export const Homepage = () => {
 
     </p>
 
-  </div>
-  <Button>
+  </div >
+  
+  <Button className="absolute top-[50%] left-[70%]  " variant="">
     <Link to="/register">Get Started</Link>
   </Button>
+
+   <Button className="absolute top-[50%] left-[70%] -translate-x-30 " variant="outline">
+    <Link to="/login">Login</Link>
+  </Button>
+
 
 </section>
  

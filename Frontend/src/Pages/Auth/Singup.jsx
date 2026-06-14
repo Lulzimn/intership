@@ -1,8 +1,12 @@
 import React from 'react'
+import SingupForm from '@/components/Shared/Auth/SingupForm'
 
 export const Signup = () => {
   return (
-    <div>Signup</div>
+    <div>
+      <SingupForm />
+    </div>
+    
   )
 }
 
