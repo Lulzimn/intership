@@ -74,7 +74,7 @@ const RegisterForm = () => {
         </p>
       </h1>
 
-      <Button className="absolute top-4 right-4" variant="ghost" size="sm">
+      <Button className="absolute top-4 left-4" variant="ghost" size="sm">
         <Link className="flex items-center justify-between gap-2" to="/">
           Home
           <MoveLeft />
