@@ -66,15 +66,15 @@ const RegisterForm = () => {
 
   return (
     <Layout title="Create an account">
-      <h1 className="absolute top-[35%] left-20 max-w-xl font-serif text-7xl text-green-900">
+      <h1 className="absolute top-10 left-4 sm:top-[35%] sm:left-20 max-w-xs sm:max-w-sm md:max-w-xl font-serif text-2xl sm:text-4xl md:text-6xl text-green-900">
         Create an account
-        <p className="mt-6 text-xl leading-relaxed text-green-800">
+        <p className="mt-3 sm:mt-6 text-xs sm:text-sm md:text-lg leading-relaxed text-green-800">
           Join us today and start your journey towards a healthier, calmer, and
           more balanced life.
         </p>
       </h1>
 
-      <Button className="absolute top-5 left-5" variant="ghost">
+      <Button className="absolute top-4 right-4" variant="ghost" size="sm">
         <Link className="flex items-center justify-between gap-2" to="/">
           Home
           <MoveLeft />
@@ -84,7 +84,7 @@ const RegisterForm = () => {
       <form
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(onSubmit)}
-        className="absolute top-[50%] left-[70%] w-full max-w-md -translate-x-1/2 -translate-y-1/2 space-y-6"
+        className="absolute inset-x-4 bottom-6 sm:bottom-auto sm:top-[50%] sm:left-[70%] w-auto sm:w-full max-w-sm sm:max-w-md -translate-y-0 sm:-translate-y-1/2 sm:-translate-x-1/2 space-y-4 sm:space-y-6 p-4 sm:p-0 bg-white/90 sm:bg-transparent rounded-lg sm:rounded-none"
       >
         <Controller
           name="role"
@@ -92,7 +92,7 @@ const RegisterForm = () => {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Role</FieldLabel>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 {roles.map((role) => {
                   const isSelected = field.value === role.id
                   return (
@@ -100,20 +100,20 @@ const RegisterForm = () => {
                       key={role.id}
                       type="button"
                       onClick={() => field.onChange(role.id)}
-                      className={`rounded-xl border p-3 text-left transition ${
+                      className={`rounded-lg sm:rounded-xl border p-2 sm:p-3 text-left transition ${
                         isSelected
                           ? "border-green-700 bg-green-50"
                           : "border-black/10 bg-white hover:border-green-600"
                       }`}
                     >
-                      <span className="block text-sm font-semibold">{role.label}</span>
-                      <span className="mt-1 block text-xs text-black/60">{role.sub}</span>
+                      <span className="block text-xs sm:text-sm font-semibold">{role.label}</span>
+                      <span className="mt-1 block text-[10px] sm:text-xs text-black/60">{role.sub}</span>
                     </button>
                   )
                 })}
               </div>
               {field.value && (
-                <p className="text-sm text-green-800">
+                <p className="text-xs sm:text-sm text-green-800">
                   Roli i zgjedhur: <strong>{field.value}</strong>
                 </p>
               )}
