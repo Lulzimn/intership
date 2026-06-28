@@ -36,7 +36,7 @@ export const Homepage = () => {
 
   </div >
   
-  <div className="absolute bottom-6 right-4 left-4 flex flex-col gap-3 sm:flex-row sm:bottom-auto sm:top-[50%] sm:left-[70%] sm:-translate-x-1/2">
+  <div className="absolute bottom-6 right-4 left-4 flex flex-col gap-9 sm:flex-row sm:bottom-auto sm:top-[50%] sm:left-[70%] sm:-translate-x-1/2">
     <Button className="w-full sm:w-auto" variant="">
       <Link to="/register">Get Started</Link>
     </Button>

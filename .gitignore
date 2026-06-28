@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Backend local artifacts
+Backend/node_modules/
+Backend/.env
+Backend/data/*.db
+Backend/data/*.db-shm
+Backend/data/*.db-wal
+Backend/data/*.sqlite
+Backend/data/*.sqlite-shm
+Backend/data/*.sqlite-wal
+
+# Frontend local env
+Frontend/.env

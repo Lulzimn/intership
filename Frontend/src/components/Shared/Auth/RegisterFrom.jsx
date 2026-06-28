@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Loader2, MoveLeft } from "lucide-react"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Layout from "@/components/Shared/Layout"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
+import { fetchTherapists } from "@/api/auth"
 
 const roles = [
   {
@@ -38,14 +40,28 @@ const fromSchema = z
     confirmPassword: z
       .string()
       .min(6, { message: "Confirm Password must be at least 6 characters long" }),
+    therapistId: z
+      .preprocess(
+        (value) => (value === "" || value === undefined || value === null ? undefined : Number(value)),
+        z.number().int().positive().optional()
+      ),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   })
+  .refine((data) => data.role !== "patient" || Number.isInteger(data.therapistId), {
+    message: "Please choose a doctor",
+    path: ["therapistId"],
+  })
 
 const RegisterForm = () => {
+  const { signUp } = useAuth()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [therapists, setTherapists] = useState([])
+  const [loadingTherapists, setLoadingTherapists] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(fromSchema),
@@ -55,13 +71,51 @@ const RegisterForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      therapistId: undefined,
     },
   })
 
-  const onSubmit = (data) => {
+  const selectedRole = form.watch("role")
+
+  useEffect(() => {
+    async function loadTherapists() {
+      setLoadingTherapists(true)
+      try {
+        const rows = await fetchTherapists()
+        setTherapists(rows)
+      } catch {
+        setTherapists([])
+      } finally {
+        setLoadingTherapists(false)
+      }
+    }
+
+    loadTherapists()
+  }, [])
+
+  useEffect(() => {
+    if (selectedRole !== "patient") {
+      form.setValue("therapistId", undefined, { shouldValidate: true })
+    }
+  }, [form, selectedRole])
+
+  const onSubmit = async (data) => {
     setLoading(true)
-    console.log(data)
-    setLoading(false)
+    setError("")
+    try {
+      await signUp({
+        role: data.role,
+        fullName: data.username,
+        email: data.email,
+        password: data.password,
+        therapistId: data.role === "patient" ? data.therapistId : undefined,
+      })
+      navigate('/dashboard', { replace: true })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -177,6 +231,39 @@ const RegisterForm = () => {
         />
 
         <Controller
+          name="therapistId"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel>Doctor</FieldLabel>
+              <select
+                className="h-10 w-full rounded-lg border border-black/10 bg-white px-3 text-sm outline-none transition focus:border-green-600"
+                value={field.value ?? ""}
+                onChange={(event) => {
+                  const nextValue = event.target.value === "" ? undefined : Number(event.target.value)
+                  field.onChange(nextValue)
+                }}
+                disabled={selectedRole !== "patient" || loadingTherapists}
+                aria-invalid={fieldState.invalid}
+              >
+                <option value="">
+                  {loadingTherapists ? "Loading doctors..." : "Choose doctor"}
+                </option>
+                {therapists.map((therapist) => (
+                  <option key={therapist.id} value={therapist.id}>
+                    {therapist.fullName} ({therapist.email})
+                  </option>
+                ))}
+              </select>
+              {selectedRole !== "patient" && (
+                <p className="text-xs text-slate-500">Choose role "Patient" to select doctor.</p>
+              )}
+              {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
+            </Field>
+          )}
+        />
+
+        <Controller
           name="confirmPassword"
           control={form.control}
           render={({ field, fieldState }) => (
@@ -197,6 +284,7 @@ const RegisterForm = () => {
         <Button type="submit" disabled={loading}>
           {loading && <Loader2 className="animate-spin" />} Create
         </Button>
+        {error && <p className="text-sm text-rose-700">{error}</p>}
       </form>
     </Layout>
   )

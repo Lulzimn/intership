@@ -1,10 +1,10 @@
 import React from 'react'
-import SingupForm from '@/components/Shared/Auth/SingupForm'
+import RegisterForm from '@/components/Shared/Auth/RegisterFrom'
 
 export const Signup = () => {
   return (
     <div>
-      <SingupForm />
+      <RegisterForm />
     </div>
     
   )
