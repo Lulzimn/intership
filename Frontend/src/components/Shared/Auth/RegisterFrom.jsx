@@ -1,130 +1,68 @@
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
+import { useState } from 'react'
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Loader2, MoveLeft } from "lucide-react"
-import { Field, FieldError, FieldLabel } from "@/components/ui/field"
-import { useEffect, useState } from "react"
-import Layout from "@/components/Shared/Layout"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "@/context/AuthContext"
-import { fetchTherapists } from "@/api/auth"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { MoveLeft } from 'lucide-react'
+import { Field, FieldError, FieldLabel } from '@/components/ui/field'
+import Layout from '@/components/Shared/Layout'
+import { Link } from 'react-router-dom'
 
 const roles = [
   {
-    id: "therapist",
-    label: "Therapist",
-    sub: "I provide therapy sessions",
+    id: 'therapist',
+    label: 'Therapist',
+    sub: 'I provide therapy sessions',
   },
   {
-    id: "patient",
-    label: "Patient",
-    sub: "I am looking for support",
+    id: 'patient',
+    label: 'Patient',
+    sub: 'I am looking for support',
   },
 ]
 
-const fromSchema = z
+const formSchema = z
   .object({
-    role: z.enum(["therapist", "patient"], {
-      message: "Please choose a role",
+    role: z.enum(['therapist', 'patient'], {
+      message: 'Please choose a role',
     }),
-    username: z
-      .string()
-      .min(3, { message: "Username must be at least 3 characters long" }),
-    email: z.email({ message: "Please enter a valid email address" }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters long" }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Confirm Password must be at least 6 characters long" }),
-    therapistId: z
-      .preprocess(
-        (value) => (value === "" || value === undefined || value === null ? undefined : Number(value)),
-        z.number().int().positive().optional()
-      ),
+    username: z.string().min(3, { message: 'Username must be at least 3 characters long' }),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
+    confirmPassword: z.string().min(6, { message: 'Confirm Password must be at least 6 characters long' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  })
-  .refine((data) => data.role !== "patient" || Number.isInteger(data.therapistId), {
-    message: "Please choose a doctor",
-    path: ["therapistId"],
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
   })
 
 const RegisterForm = () => {
-  const { signUp } = useAuth()
-  const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [therapists, setTherapists] = useState([])
-  const [loadingTherapists, setLoadingTherapists] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const form = useForm({
-    resolver: zodResolver(fromSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      role: undefined,
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      therapistId: undefined,
+      role: 'patient',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   })
 
-  const selectedRole = form.watch("role")
-
-  useEffect(() => {
-    async function loadTherapists() {
-      setLoadingTherapists(true)
-      try {
-        const rows = await fetchTherapists()
-        setTherapists(rows)
-      } catch {
-        setTherapists([])
-      } finally {
-        setLoadingTherapists(false)
-      }
-    }
-
-    loadTherapists()
-  }, [])
-
-  useEffect(() => {
-    if (selectedRole !== "patient") {
-      form.setValue("therapistId", undefined, { shouldValidate: true })
-    }
-  }, [form, selectedRole])
-
-  const onSubmit = async (data) => {
-    setLoading(true)
-    setError("")
-    try {
-      await signUp({
-        role: data.role,
-        fullName: data.username,
-        email: data.email,
-        password: data.password,
-        therapistId: data.role === "patient" ? data.therapistId : undefined,
-      })
-      navigate('/dashboard', { replace: true })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed')
-    } finally {
-      setLoading(false)
-    }
+  const onSubmit = (data) => {
+    setSubmitted(true)
+    console.info('Demo form submitted', data)
   }
 
   return (
-    <Layout title="Create an account">
+    <Layout title="Demo form">
       <h1 className="absolute top-10 left-4 sm:top-[35%] sm:left-20 max-w-xs sm:max-w-sm md:max-w-xl font-serif text-2xl sm:text-4xl md:text-6xl text-green-900">
-        Create an account
+        Demo therapy form
         <p className="mt-3 sm:mt-6 text-xs sm:text-sm md:text-lg leading-relaxed text-green-800">
-          Join us today and start your journey towards a healthier, calmer, and
-          more balanced life.
+          This is a static demo for preview and sharing. No backend is required for publishing.
         </p>
       </h1>
 
@@ -140,6 +78,12 @@ const RegisterForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="absolute inset-x-4 bottom-6 sm:bottom-auto sm:top-[50%] sm:left-[70%] w-auto sm:w-full max-w-sm sm:max-w-md -translate-y-0 sm:-translate-y-1/2 sm:-translate-x-1/2 space-y-4 sm:space-y-6 p-4 sm:p-0 bg-white/90 sm:bg-transparent rounded-lg sm:rounded-none"
       >
+        {submitted && (
+          <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800">
+            Thank you! Your demo form was submitted successfully.
+          </div>
+        )}
+
         <Controller
           name="role"
           control={form.control}
@@ -156,8 +100,8 @@ const RegisterForm = () => {
                       onClick={() => field.onChange(role.id)}
                       className={`rounded-lg sm:rounded-xl border p-2 sm:p-3 text-left transition ${
                         isSelected
-                          ? "border-green-700 bg-green-50"
-                          : "border-black/10 bg-white hover:border-green-600"
+                          ? 'border-green-700 bg-green-50'
+                          : 'border-black/10 bg-white hover:border-green-600'
                       }`}
                     >
                       <span className="block text-xs sm:text-sm font-semibold">{role.label}</span>
@@ -166,11 +110,6 @@ const RegisterForm = () => {
                   )
                 })}
               </div>
-              {field.value && (
-                <p className="text-xs sm:text-sm text-green-800">
-                  Roli i zgjedhur: <strong>{field.value}</strong>
-                </p>
-              )}
               {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
             </Field>
           )}
@@ -187,7 +126,7 @@ const RegisterForm = () => {
                 {...field}
                 type="text"
                 aria-invalid={fieldState.invalid}
-                placeholder="Enter your Full Name"
+                placeholder="Enter your full name"
               />
               {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
             </Field>
@@ -231,39 +170,6 @@ const RegisterForm = () => {
         />
 
         <Controller
-          name="therapistId"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel>Doctor</FieldLabel>
-              <select
-                className="h-10 w-full rounded-lg border border-black/10 bg-white px-3 text-sm outline-none transition focus:border-green-600"
-                value={field.value ?? ""}
-                onChange={(event) => {
-                  const nextValue = event.target.value === "" ? undefined : Number(event.target.value)
-                  field.onChange(nextValue)
-                }}
-                disabled={selectedRole !== "patient" || loadingTherapists}
-                aria-invalid={fieldState.invalid}
-              >
-                <option value="">
-                  {loadingTherapists ? "Loading doctors..." : "Choose doctor"}
-                </option>
-                {therapists.map((therapist) => (
-                  <option key={therapist.id} value={therapist.id}>
-                    {therapist.fullName} ({therapist.email})
-                  </option>
-                ))}
-              </select>
-              {selectedRole !== "patient" && (
-                <p className="text-xs text-slate-500">Choose role "Patient" to select doctor.</p>
-              )}
-              {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
-            </Field>
-          )}
-        />
-
-        <Controller
           name="confirmPassword"
           control={form.control}
           render={({ field, fieldState }) => (
@@ -281,10 +187,7 @@ const RegisterForm = () => {
           )}
         />
 
-        <Button type="submit" disabled={loading}>
-          {loading && <Loader2 className="animate-spin" />} Create
-        </Button>
-        {error && <p className="text-sm text-rose-700">{error}</p>}
+        <Button type="submit">Submit demo</Button>
       </form>
     </Layout>
   )
