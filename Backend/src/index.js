@@ -7,6 +7,7 @@ import messagesRouter from './routes/messages.js';
 import moodsRouter from './routes/moods.js';
 import therapyRouter from './routes/therapy.js';
 import usersRouter from './routes/users.js';
+import { runSeed } from './seed.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +31,8 @@ app.use('/api/users', requireAuth, usersRouter);
 app.use('/api/therapy', requireAuth, therapyRouter);
 app.use('/api/moods', optionalAuth, moodsRouter);
 app.use('/api/messages', requireAuth, messagesRouter);
+
+runSeed();
 
 app.listen(PORT, () => {
   console.log(`Mood tracker API running on http://localhost:${PORT}`);

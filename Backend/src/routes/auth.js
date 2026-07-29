@@ -113,6 +113,31 @@ router.get('/therapists', (_req, res) => {
   return res.json(rows);
 });
 
+router.post('/reset-password', (req, res) => {
+  const { email, newPassword } = req.body || {};
+
+  if (!email || !newPassword) {
+    return res.status(400).json({ error: 'email and newPassword are required' });
+  }
+
+  if (String(newPassword).length < 6) {
+    return res.status(400).json({ error: 'newPassword must be at least 6 characters' });
+  }
+
+  const cleanEmail = String(email).trim().toLowerCase();
+  const user = db.prepare('SELECT id FROM users WHERE email = ?').get(cleanEmail);
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const passwordHash = bcrypt.hashSync(String(newPassword), 10);
+
+  db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, user.id);
+
+  return res.json({ message: 'Password reset successfully' });
+});
+
 router.post('/login', (req, res) => {
   const { email, password } = req.body || {};
 

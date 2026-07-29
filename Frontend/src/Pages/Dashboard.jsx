@@ -90,7 +90,7 @@ export const Dashboard = () => {
           <p className="text-slate-600">Email: {user?.email}</p>
         </header>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {user?.role === 'therapist' ? (
             <div className="rounded-2xl bg-white/90 p-6 shadow-sm backdrop-blur-sm">
               <h2 className="text-lg font-semibold text-slate-900">Patients Overview</h2>
@@ -155,6 +155,11 @@ export const Dashboard = () => {
               )}
             </Link>
           )}
+
+          <Link to="/goals" className="rounded-2xl bg-white/90 p-6 shadow-sm backdrop-blur-sm transition hover:shadow-md">
+            <h2 className="text-lg font-semibold text-slate-900">Therapy Goals</h2>
+            <p className="mt-1 text-sm text-slate-600">Track breathing, meditation, sleep, and hydration streaks.</p>
+          </Link>
 
           <Link to="/chat" className="rounded-2xl bg-white/90 p-6 shadow-sm backdrop-blur-sm transition hover:shadow-md">
             <h2 className="text-lg font-semibold text-slate-900">Therapy Chat</h2>

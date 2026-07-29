@@ -75,6 +75,30 @@ db.exec(`
     FOREIGN KEY (therapist_id) REFERENCES users(id) ON DELETE SET NULL
   );
 
+  CREATE TABLE IF NOT EXISTS therapy_goals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    goal_type TEXT NOT NULL CHECK (goal_type IN ('breathing', 'meditation', 'sleep', 'hydration')),
+    title TEXT NOT NULL,
+    description TEXT,
+    reminder_time TEXT,
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    longest_streak INTEGER NOT NULL DEFAULT 0,
+    last_completed_date TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE IF NOT EXISTS therapy_goal_completions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    goal_id INTEGER NOT NULL,
+    completed_date TEXT NOT NULL,
+    completed_at TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE(goal_id, completed_date),
+    FOREIGN KEY (goal_id) REFERENCES therapy_goals(id) ON DELETE CASCADE
+  );
+
   CREATE INDEX IF NOT EXISTS idx_moods_date ON mood_entries(date);
   CREATE UNIQUE INDEX IF NOT EXISTS idx_moods_patient_date_unique ON mood_entries(patient_id, date);
   CREATE UNIQUE INDEX IF NOT EXISTS idx_moods_anonymous_date_unique
@@ -83,6 +107,8 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_messages_pair_time ON messages(sender_id, receiver_id, sent_at);
   CREATE INDEX IF NOT EXISTS idx_messages_receiver_time ON messages(receiver_id, sent_at);
   CREATE INDEX IF NOT EXISTS idx_clients_therapist ON clients(therapist_id);
+  CREATE INDEX IF NOT EXISTS idx_therapy_goals_user_created ON therapy_goals(user_id, created_at DESC);
+  CREATE INDEX IF NOT EXISTS idx_therapy_goal_completions_goal_date ON therapy_goal_completions(goal_id, completed_date DESC);
 `);
 
 db.exec(`

@@ -16,6 +16,13 @@ npm run dev
 
 Pas nisjes, aplikacioni eshte i disponueshem ne `http://localhost:5173`.
 
+## Demo accounts per testim
+
+- Therapist: `therapist@test.com` / `Test1234`
+- Pacienti: `pacient@test.com` / `Test1234`
+
+Keto llogari krijohen automatikisht kur backend nis.
+
 ## Rrugat kryesore
 
 - `/` - Home

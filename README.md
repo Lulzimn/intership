@@ -25,6 +25,19 @@ npm run dev
 
 Aplikacioni starton ne `http://localhost:5173`.
 
+## Demo accounts per testim
+
+- Therapist: `therapist@test.com` / `Test1234`
+- Pacienti: `pacient@test.com` / `Test1234`
+
+Keto llogari krijohen automatikisht kur backend nis.
+
+```bash
+cd Backend
+npm install
+npm run dev
+```
+
 ## Rrugat kryesore ne aplikacion
 
 - `/` - Home

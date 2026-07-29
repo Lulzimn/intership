@@ -56,6 +56,18 @@ export const LoginPage = () => {
             required
           />
 
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800">Demo accounts</p>
+            <p>Therapist: therapist@test.com / Test1234</p>
+            <p>Pacienti: pacient@test.com / Test1234</p>
+          </div>
+
+          <div className="text-right">
+            <Link to="/reset-password" className="text-sm font-medium text-indigo-700">
+              Forgot password?
+            </Link>
+          </div>
+
           {error && <p className="text-sm text-rose-700">{error}</p>}
 
           <Button type="submit" disabled={loading} className="w-full">

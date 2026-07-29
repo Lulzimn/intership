@@ -3,9 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Login from './Pages/Auth/LoginPage.jsx'
 import Signup from './Pages/Auth/Singup.jsx'
+import ResetPassword from './Pages/Auth/ResetPassword.jsx'
 
 import Homepage from './components/Shared/HomeFrom.jsx'
 import { Dashboard } from './Pages/Dashboard.jsx'
+import Goals from './Pages/Goals.jsx'
 import RegisterForm from './components/Shared/Auth/RegisterFrom.jsx'
 import Moods from './Pages/Moods.jsx'
 import Chat from './Pages/Chat.jsx'
@@ -20,6 +22,7 @@ function App() {
         
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
        
         <Route
           path="/dashboard"
@@ -35,6 +38,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Moods />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/goals"
+          element={
+            <ProtectedRoute>
+              <Goals />
             </ProtectedRoute>
           }
         />

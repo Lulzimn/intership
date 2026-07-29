@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import db, { databasePath } from './db.js';
 
 function upsertUser(role, fullName, email, plainPassword) {
@@ -57,9 +59,9 @@ function seedMessage(senderId, receiverId, body) {
   }
 }
 
-function runSeed() {
-  const therapistId = upsertUser('therapist', 'Demo Therapist', 'therapist@therapy.local', 'secret123');
-  const patientId = upsertUser('patient', 'Demo Patient', 'patient@therapy.local', 'secret123');
+export function runSeed() {
+  const therapistId = upsertUser('therapist', 'Demo Therapist', 'therapist@test.com', 'Test1234');
+  const patientId = upsertUser('patient', 'Demo Patient', 'pacient@test.com', 'Test1234');
 
   ensureLink(therapistId, patientId);
   seedMood(patientId);
@@ -68,8 +70,13 @@ function runSeed() {
 
   console.log('Seed completed');
   console.log(`Database: ${databasePath}`);
-  console.log('Therapist login: therapist@therapy.local / secret123');
-  console.log('Patient login: patient@therapy.local / secret123');
+  console.log('Therapist login: therapist@test.com / Test1234');
+  console.log('Patient login: pacient@test.com / Test1234');
 }
 
-runSeed();
+const isDirectExecution = process.argv[1]
+  && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectExecution) {
+  runSeed();
+}

@@ -21,3 +21,10 @@ export function fetchMe() {
 export function fetchTherapists() {
   return apiFetch('/auth/therapists')
 }
+
+export function resetPassword(payload) {
+  return apiFetch('/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
