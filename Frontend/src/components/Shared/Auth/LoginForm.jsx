@@ -1,10 +1,7 @@
 import React from 'react'
 
-export const LoginPage = () => {
+export const LoginForm = () => {
   return (
-    <div>LoginPage</div>
+    <div>LoginForm</div>
   )
 }
-
-export default LoginPage
-  
